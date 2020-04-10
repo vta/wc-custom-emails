@@ -122,6 +122,11 @@ class Woocommerce_Custom_Emails {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-woocommerce-custom-emails-public.php';
 
+        /**
+         * The class that runs the email manager. It queues all of the custom emails in the WooCommerce Email Queue.
+         */
+        require_once plugin_dir_path( dirname(__FILE__) ) . 'includes/class-woocommerce-custom-emails-manager.php';
+
 		$this->loader = new Woocommerce_Custom_Emails_Loader();
 
 	}
