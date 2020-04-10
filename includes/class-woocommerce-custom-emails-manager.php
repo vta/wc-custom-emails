@@ -1,7 +1,7 @@
 <?php
 /**
  * Handles email sending
- * @credit - Pinal Sah
+ * @credit - Vishal Kothari
  * @see - https://www.tychesoftwares.com/create-custom-email-templates-woocommerce/
  */
 class Custom_Email_Manager {
@@ -36,7 +36,7 @@ class Custom_Email_Manager {
     public function custom_init_emails( $emails ) {
         // Include the email class file if it's not included already
         if ( ! isset( $emails[ 'Custom_Email' ] ) ) {
-            $emails[ 'Custom_Email' ] = include_once( 'emails/class-custom-email.php' );
+            $emails[ 'Custom_Email' ] = include_once(  plugin_dir_path(__DIR__) . 'emails/class-custom-email.php' );
         }
 
         return $emails;
