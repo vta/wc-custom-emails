@@ -19,22 +19,22 @@ if ( $order && $billing_first_name && $billing_last_name ) : ?>
     <table cellspacing="0" cellpadding="6" style="width: 100%; border: 1px solid #eee;" border="1" bordercolor="#eee">
         <tbody>
         <tr>
-            <th scope="row" style="text-align:left; border: 1px solid #eee;"><?php _e( 'Ordered Product', 'custom-email' ); ?></th>
+            <th scope="row" style="text-align:left; border: 1px solid #eee;"><?php _e( 'Ordered Product', 'ready-to-pickup-email' ); ?></th>
             <td style="text-align:left; border: 1px solid #eee;"><?php echo $item_data->product_title; ?></td>
         </tr>
         <tr>
-            <th scope="row" style="text-align:left; border: 1px solid #eee;"><?php _e( 'Quantity', 'custom-email' ); ?></th>
+            <th scope="row" style="text-align:left; border: 1px solid #eee;"><?php _e( 'Quantity', 'ready-to-pickup-email' ); ?></th>
             <td style="text-align:left; border: 1px solid #eee;"><?php echo $item_data->qty; ?></td>
         </tr>
         <tr>
-            <th scope="row" style="text-align:left; border: 1px solid #eee;"><?php _e( 'Total', 'custom-email' ); ?></th>
+            <th scope="row" style="text-align:left; border: 1px solid #eee;"><?php _e( 'Total', 'ready-to-pickup-email' ); ?></th>
             <td style="text-align:left; border: 1px solid #eee;"><?php echo $item_data->total; ?></td>
         </tr>
         </tbody>
     </table>
 
-    <p><?php _e( 'This is a custom email sent as the order status has been changed to Pending Payment.', 'custom-email' ); ?></p>
+    <p><?php _e( 'This is a custom email sent as the order status has been changed to Pending Payment.', 'ready-to-pickup-email' ); ?></p>
 
-    <p><?php echo make_clickable( sprintf( __( 'You can view and edit this order in the dashboard here: %s', 'custom-email' ), admin_url( 'post.php?post=' . $item_data->order_id . '&action=edit' ) ) ); ?></p>
+    <p><?php echo make_clickable( sprintf( __( 'You can view and edit this order in the dashboard here: %s', 'ready-to-pickup-email' ), admin_url( 'post.php?post=' . $item_data->order_id . '&action=edit' ) ) ); ?></p>
 
 <?php do_action( 'woocommerce_email_footer' ); ?>
