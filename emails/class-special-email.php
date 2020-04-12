@@ -1,32 +1,31 @@
 <?php
 /**
- * Custom Email
+ * Special Email
  *
- * A template email for how customer emails should follow
+ * A special email sent to the admin when an order status is changed to "Special".
  *
- * @class       Custom_Email
+ * @class       Special_Email
  * @extends     WC_Email
  *
  */
-class Custom_Email extends WC_Email {
+class Special_Email extends WC_Email {
 
     function __construct() {
 
         // Add email ID, title, description, heading, subject
-        $this->id                   = 'custom_email';
-        $this->customer_email       = true;
-        $this->title                = __( 'Custom Item Email', 'custom-email' );
-        $this->description          = __( 'This email is received when an order status is changed to Pending.', 'custom-email' );
+        $this->id                   = 'special_email';
+        $this->title                = __( 'Special Email', 'custom-email' );
+        $this->description          = __( 'This email is sent to cusstomers when an order status is changed to Special.', 'custom-email' );
 
-        $this->heading              = __( 'Custom Item Email', 'custom-email' );
+        $this->heading              = __( 'Special Item Email', 'custom-email' );
         $this->subject              = __( '[{blogname}] Order for {product_title} (Order {order_number}) - {order_date}', 'custom-email' );
 
         // email template path
-        $this->template_html    = 'emails/custom-item-email-html.php';
-        $this->template_plain   = 'emails/plain/custom-item-email-plain.php';
+        $this->template_html    = 'emails/special-email-html.php';
+        $this->template_plain   = 'emails/plain/special-email-plain.php';
 
         // Triggers for this email
-        add_action( 'custom_finishing_email_notification', array( $this, 'queue_notification' ) );
+        add_action( 'custom_special_email_notification', array( $this, 'queue_notification' ) );
         add_action( 'custom_item_email_notification', array( $this, 'trigger' ) );
 
         // Call parent constructor
@@ -35,12 +34,7 @@ class Custom_Email extends WC_Email {
         // Other settings
         $this->template_base = CUSTOM_TEMPLATE_PATH;
         // default the email recipient to the admin's email address
-        $this->recipient     = null;
-        $this->placeholders  = array(
-            '{order_date}'              => '',
-            '{order_number}'            => '',
-            '{order_billing_full_name}' => '',
-        );
+//        $this->recipient     = $this->get_option( 'recipient', get_option( 'admin_email' ) );
 
     }
 
@@ -102,7 +96,7 @@ class Custom_Email extends WC_Email {
     }
 
     // Create an object with the data to be passed to the templates
-    public function create_object( $item_id ) {
+    public static function create_object( $item_id ) {
 
         global $wpdb;
 
@@ -119,8 +113,7 @@ class Custom_Email extends WC_Email {
         }
         $item_object->order_id = $order_id;
 
-        $order               = new WC_order( $order_id );
-        $this->recipient     = $order->get_billing_email();
+        $order = new WC_order( $order_id );
 
         // order date
         $post_data = get_post( $order_id );
@@ -154,8 +147,7 @@ class Custom_Email extends WC_Email {
         ob_start();
         wc_get_template( $this->template_html, array(
             'item_data'       => $this->object,
-            'email_heading' => $this->get_heading(),
-            'additional_content' => $this->get_additional_content()
+            'email_heading' => $this->get_heading()
         ), 'custom-templates', $this->template_base );
         return ob_get_clean();
     }
@@ -165,8 +157,7 @@ class Custom_Email extends WC_Email {
         ob_start();
         wc_get_template( $this->template_plain, array(
             'item_data'       => $this->object,
-            'email_heading' => $this->get_heading(),
-            'additional_content' => $this->get_additional_content()
+            'email_heading' => $this->get_heading()
         ), 'custom-templates', $this->template_base );
         return ob_get_clean();
     }
@@ -189,13 +180,18 @@ class Custom_Email extends WC_Email {
 
     // form fields that are displayed in WooCommerce->Settings->Emails
     function init_form_fields() {
-        $placeholder_text  = sprintf( __( 'Available placeholders: %s', 'woocommerce' ), '<code>' . esc_html( implode( '</code>, <code>', array_keys( $this->placeholders ) ) ) . '</code>' );
         $this->form_fields = array(
             'enabled' => array(
                 'title' 		=> __( 'Enable/Disable', 'custom-email' ),
                 'type' 			=> 'checkbox',
                 'label' 		=> __( 'Enable this email notification', 'custom-email' ),
                 'default' 		=> 'yes'
+            ),
+            'recipient' => array(
+                'title'         => __( 'Recipient', 'custom-email' ),
+                'type'          => 'text',
+                'description'   => sprintf( __( 'Enter recipients (comma separated) for this email. Defaults to %s', 'custom-email' ), get_option( 'admin_email' ) ),
+                'default'       => get_option( 'admin_email' )
             ),
             'subject' => array(
                 'title' 		=> __( 'Subject', 'custom-email' ),
@@ -210,15 +206,6 @@ class Custom_Email extends WC_Email {
                 'description' 	=> sprintf( __( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: <code>%s</code>.', 'custom-email' ), $this->heading ),
                 'placeholder' 	=> '',
                 'default' 		=> ''
-            ),
-            'additional_content' => array(
-                'title'       => __( 'Additional content', 'custom-email' ),
-                'description' => __( 'Text to appear below the main email content.', 'custom-email' ) . ' ' . $placeholder_text,
-                'css'         => 'width:400px; height: 75px;',
-                'placeholder' => __( 'N/A', 'custom-email' ),
-                'type'        => 'textarea',
-                'default'     => $this->get_default_additional_content(),
-                'desc_tip'    => true,
             ),
             'email_type' => array(
                 'title' 		=> __( 'Email type', 'custom-email' ),
@@ -236,5 +223,5 @@ class Custom_Email extends WC_Email {
     }
 
 }
-return new Custom_Email();
+return new Special_Email();
 ?>

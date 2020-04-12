@@ -35,6 +35,13 @@ if ( $order && $billing_first_name && $billing_last_name ) : ?>
 
   <p><?php _e( 'This is a custom email sent as the order status has been changed to Pending Payment.', 'custom-email' ); ?></p>
 
-  <p><?php echo make_clickable( sprintf( __( 'You can view and edit this order in the dashboard here: %s', 'custom-email' ), admin_url( 'post.php?post=' . $item_data->order_id . '&action=edit' ) ) ); ?></p>
+<?php
+/**
+* Show user-defined additional content - this is set in each email's settings.
+*/
+if ( $additional_content ) {
+echo wp_kses_post( wpautop( wptexturize( $additional_content ) ) );
+}
+?>
 
 <?php do_action( 'woocommerce_email_footer' ); ?>
