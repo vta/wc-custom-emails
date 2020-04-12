@@ -8,25 +8,25 @@
  * @extends     WC_Email
  *
  */
-class Ready_To_Pickup_Email extends WC_Email {
+class Custom_Email extends WC_Email {
 
     function __construct() {
 
         // Add email ID, title, description, heading, subject
-        $this->id                   = 'ready-to-pickup';
-        $this->title                = __( 'Ready to Pick Up', 'ready-to-pickup-email' );
-        $this->description          = __( 'This email is received when an order status is changed to "Ready to Pick Up".',
-            'ready_to_pickup' );
+        $this->id                   = 'custom_email';
+        $this->title                = __( 'Custom Item Email', 'custom-email' );
+        $this->description          = __( 'This email is received when an order status is changed to Pending.', 'custom-email' );
 
-        $this->heading              = __( 'Ready to Pick Up Email', 'ready-to-pickup-email' );
-        $this->subject              = __( '[{blogname}] Order for {product_title} (Order {order_number}) - {order_date}', 'ready-to-pickup-email' );
+        $this->heading              = __( 'Custom Item Email', 'custom-email' );
+        $this->subject              = __( '[{blogname}] Order for {product_title} (Order {order_number}) - {order_date}', 'custom-email' );
 
         // email template path
-        $this->template_html    = 'emails/ready-to-pickup-html.php';
-        $this->template_plain   = 'emails/plain/ready-to-pickup-plain.php';
+        $this->template_html    = 'emails/custom-item-email-html.php';
+        $this->template_plain   = 'emails/plain/custom-item-email-plain.php';
 
         // Triggers for this email
-        add_action( 'custom_pending_email_notification', array( $this, 'queue_notification' ) );
+//        add_action( 'woocommerce_order_status_processing_to_pending_notification', array( $this, 'trigger' ) );
+        add_action( 'custom_processing_email_notification', array( $this, 'queue_notification' ) );
         add_action( 'custom_item_email_notification', array( $this, 'trigger' ) );
 
         // Call parent constructor
@@ -79,10 +79,10 @@ class Ready_To_Pickup_Email extends WC_Email {
             } else {
 
                 $this->find[]    = '{order_date}';
-                $this->replace[] = __( 'N/A', 'ready-to-pickup-email' );
+                $this->replace[] = __( 'N/A', 'custom-email' );
 
                 $this->find[]    = '{order_number}';
-                $this->replace[] = __( 'N/A', 'ready-to-pickup-email' );
+                $this->replace[] = __( 'N/A', 'custom-email' );
             }
 
             // if no recipient is set, do not send the email
@@ -90,7 +90,8 @@ class Ready_To_Pickup_Email extends WC_Email {
                 return;
             }
             // send the email
-            $this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers() );
+            $this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(),
+                array() );
 
         }
     }
@@ -182,45 +183,46 @@ class Ready_To_Pickup_Email extends WC_Email {
     function init_form_fields() {
         $this->form_fields = array(
             'enabled' => array(
-                'title' 		=> __( 'Enable/Disable', 'ready-to-pickup-email' ),
+                'title' 		=> __( 'Enable/Disable', 'custom-email' ),
                 'type' 			=> 'checkbox',
-                'label' 		=> __( 'Enable this email notification', 'ready-to-pickup-email' ),
+                'label' 		=> __( 'Enable this email notification', 'custom-email' ),
                 'default' 		=> 'yes'
             ),
             'recipient' => array(
-                'title'         => __( 'Recipient', 'ready-to-pickup-email' ),
+                'title'         => __( 'Recipient', 'custom-email' ),
                 'type'          => 'text',
-                'description'   => sprintf( __( 'Enter recipients (comma separated) for this email. Defaults to %s', 'ready-to-pickup-email' ), get_option( 'admin_email' ) ),
+                'description'   => sprintf( __( 'Enter recipients (comma separated) for this email. Defaults to %s', 'custom-email' ), get_option( 'admin_email' ) ),
                 'default'       => get_option( 'admin_email' )
             ),
             'subject' => array(
-                'title' 		=> __( 'Subject', 'ready-to-pickup-email' ),
+                'title' 		=> __( 'Subject', 'custom-email' ),
                 'type' 			=> 'text',
-                'description' 	=> sprintf( __( 'This controls the email subject line. Leave blank to use the default subject: <code>%s</code>.', 'ready-to-pickup-email' ), $this->subject ),
+                'description' 	=> sprintf( __( 'This controls the email subject line. Leave blank to use the default subject: <code>%s</code>.', 'custom-email' ), $this->subject ),
                 'placeholder' 	=> '',
                 'default' 		=> ''
             ),
             'heading' => array(
-                'title' 		=> __( 'Email Heading', 'ready-to-pickup-email' ),
+                'title' 		=> __( 'Email Heading', 'custom-email' ),
                 'type' 			=> 'text',
-                'description' 	=> sprintf( __( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: <code>%s</code>.', 'ready-to-pickup-email' ), $this->heading ),
+                'description' 	=> sprintf( __( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: <code>%s</code>.', 'custom-email' ), $this->heading ),
                 'placeholder' 	=> '',
                 'default' 		=> ''
             ),
             'email_type' => array(
-                'title' 		=> __( 'Email type', 'ready-to-pickup-email' ),
+                'title' 		=> __( 'Email type', 'custom-email' ),
                 'type' 			=> 'select',
-                'description' 	=> __( 'Choose which format of email to send.', 'ready-to-pickup-email' ),
+                'description' 	=> __( 'Choose which format of email to send.', 'custom-email' ),
                 'default' 		=> 'html',
                 'class'			=> 'email_type',
                 'options'		=> array(
-                    'plain'		 	=> __( 'Plain text', 'ready-to-pickup-email' ),
-                    'html' 			=> __( 'HTML', 'ready-to-pickup-email' ),
-                    'multipart' 	=> __( 'Multipart', 'ready-to-pickup-email' ),
+                    'plain'		 	=> __( 'Plain text', 'custom-email' ),
+                    'html' 			=> __( 'HTML', 'custom-email' ),
+                    'multipart' 	=> __( 'Multipart', 'custom-email' ),
                 )
             )
         );
     }
 
 }
-return new Ready_To_Pickup_Email();
+return new Custom_Email();
+?>

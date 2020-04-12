@@ -14,14 +14,15 @@ class Custom_Email_Manager {
         // template path
         define( 'CUSTOM_TEMPLATE_PATH', untrailingslashit( plugin_dir_path( __DIR__ ) ) . '/templates/' );
         // hook for when order status is changed
-        add_action( 'wooccommerce_order_status_pending', array( &$this, 'custom_trigger_email_action' ), 10,
+        add_action( 'woocommerce_order_status_processing', array( &$this, 'custom_trigger_email_action' ), 10,
             2 );
         // include the email class files
         add_filter( 'woocommerce_email_classes', array( &$this, 'custom_init_emails' ) );
 
         // Email Actions - Triggers
         $email_actions = array(
-            'ready_to_pickup',
+
+            'custom_processing_email',
             'custom_item_email',
         );
 
@@ -35,8 +36,8 @@ class Custom_Email_Manager {
 
     public function custom_init_emails( $emails ) {
         // Include the email class file if it's not included already
-        if ( ! isset( $emails[ 'Ready_To_Pickup_Email' ] ) ) {
-            $emails[ 'Ready_To_Pickup_Email' ] = include_once(  plugin_dir_path(__DIR__) . 'emails/class-ready-to-pickup-email.php' );
+        if ( ! isset( $emails[ 'Custom_Email' ] ) ) {
+            $emails[ 'Custom_Email' ] = include_once( plugin_dir_path(__DIR__) . 'emails/class-custom-email.php' );
         }
 
         return $emails;
@@ -46,8 +47,8 @@ class Custom_Email_Manager {
         // add an action for our email trigger if the order id is valid
         if ( isset( $order_id ) && 0 != $order_id ) {
 
-            new WC_Emails();
-            do_action( 'ready_to_pickup_notification', $order_id );
+            WC_Emails::instance();
+            do_action( 'custom_processing_email_notification', $order_id );
 
         }
     }
@@ -55,7 +56,7 @@ class Custom_Email_Manager {
     public function custom_template_directory( $directory, $template ) {
         // ensure the directory name is correct
         if ( false !== strpos( $template, '-custom' ) ) {
-            return 'custom-templates';
+            return 'my-custom-email';
         }
 
         return $directory;
