@@ -4,7 +4,7 @@
  *
  * An email class for custom "Finishing" emails
  *
- * @class       Custom_Email
+ * @class       Finishing_Email
  * @extends     WC_Email
  *
  */

@@ -17,7 +17,7 @@ class Custom_Email_Manager {
         add_action( 'woocommerce_order_status_example', array( &$this, 'custom_trigger_example_action' ), 10, 2 );
         add_action( 'woocommerce_order_status_finishing', array( &$this, 'custom_trigger_finishing_action' ), 10, 2 );
         add_action( 'woocommerce_order_status_special', array( &$this, 'custom_trigger_special_action' ), 10, 2 );
-        add_action( 'woocommerce_order_status_ready_for_pickup', array( &$this, 'custom_trigger_special_action' ), 10,
+        add_action( 'woocommerce_order_status_ready', array( &$this, 'custom_trigger_ready_action' ), 10,
             2 );
         // include the email class files
         add_filter( 'woocommerce_email_classes', array( &$this, 'custom_init_emails' ) );
@@ -30,8 +30,8 @@ class Custom_Email_Manager {
             'custom_finishing_email_trigger',
             'custom_special_email',
             'custom_special_email_trigger',
-            'custom_ready_for_pickup',
-            'custom_ready_for_pickup_trigger'
+            'custom_ready_email',
+            'custom_ready_email_trigger'
         );
 
         foreach ( $email_actions as $action ) {
@@ -56,8 +56,8 @@ class Custom_Email_Manager {
             $emails[ 'Special_Email' ] = include_once( plugin_dir_path(__DIR__) . 'emails/class-special-email.php' );
         }
 
-        if ( ! isset( $emails['']) ) {
-            $emails[ 'Ready_For_Pickup_Email' ] = include_once( plugin_dir_path(__DIR__) . 'emails/class-ready-for-pickup-email.php' );
+        if ( ! isset( $emails['Ready_Email']) ) {
+            $emails[ 'Ready_Email' ] = include_once( plugin_dir_path(__DIR__) . 'emails/class-ready-for-pickup-email.php' );
         }
 
         return $emails;
@@ -93,12 +93,12 @@ class Custom_Email_Manager {
         }
     }
 
-    public function custom_trigger_ready_for_pickup_action( $order_id, $posted ) {
+    public function custom_trigger_ready_action( $order_id, $posted ) {
         // add an action for our email trigger if the order id is valid
         if ( isset( $order_id ) && 0 != $order_id ) {
 
             WC_Emails::instance();
-            do_action( 'custom_special_email_notification', $order_id );
+            do_action( 'custom_ready_email_notification', $order_id );
 
         }
     }
