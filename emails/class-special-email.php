@@ -27,7 +27,7 @@ class Special_Email extends WC_Email {
 
         // Triggers for this email
         add_action( 'custom_special_email_notification', array( $this, 'queue_notification' ) );
-        add_action( 'custom_item_email_notification', array( $this, 'trigger' ) );
+        add_action( 'custom_special_email_trigger_notification', array( $this, 'trigger' ) );
 
         // Call parent constructor
         parent::__construct();
@@ -54,7 +54,7 @@ class Special_Email extends WC_Email {
         // foreach item in the order
         foreach ( $items as $item_key => $item_value ) {
             // add an event for the item email, pass the item ID so other details can be collected as needed
-            wp_schedule_single_event( time(), 'custom_item_email', array( 'item_id' => $item_key ) );
+            wp_schedule_single_event( time(), 'custom_special_email_trigger', array( 'item_id' => $item_key ) );
         }
     }
 
