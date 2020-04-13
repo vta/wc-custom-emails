@@ -16,6 +16,8 @@ class Custom_Email_Manager {
         // hook for when order status is changed
         add_action( 'woocommerce_order_status_finishing', array( &$this, 'custom_trigger_email_action' ), 10,
             2 );
+        add_action( 'woocommerce_order_status_special', array( &$this, 'custom_trigger_email_action' ), 10,
+            2 );
         // include the email class files
         add_filter( 'woocommerce_email_classes', array( &$this, 'custom_init_emails' ) );
 
@@ -23,6 +25,7 @@ class Custom_Email_Manager {
         $email_actions = array(
 
             'custom_finishing_email',
+            'custom_special_email',
             'custom_item_email',
         );
 
@@ -50,6 +53,7 @@ class Custom_Email_Manager {
 
             WC_Emails::instance();
             do_action( 'custom_finishing_email_notification', $order_id );
+            do_action( 'custom_special_email_notification', $order_id );
 
         }
     }

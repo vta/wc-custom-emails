@@ -16,7 +16,8 @@ if ( $order && $billing_first_name && $billing_last_name ) : ?>
     <p><?php printf( $opening_paragraph, $billing_first_name . ' ' . $billing_last_name ); ?></p>
 <?php endif; ?>
 
-    <table cellspacing="0" cellpadding="6" style="width: 100%; border: 1px solid #eee;" border="1" bordercolor="#eee">
+    <table cellspacing="0" cellpadding="6" style="width: 100%; border: 1px solid #eee; color: black;" border="1"
+           bordercolor="#eee">
         <tbody>
         <tr>
             <th scope="row" style="text-align:left; border: 1px solid #eee;"><?php _e( 'Ordered Product', 'special-email'
@@ -39,5 +40,13 @@ if ( $order && $billing_first_name && $billing_last_name ) : ?>
     <p><?php _e( 'This is an email sent as the order status has been changed to "Special".', 'special-email' );
     ?></p>
 
+<?php
+/**
+ * Show user-defined additional content - this is set in each email's settings.
+ */
+if ( $additional_content ) {
+    echo esc_html( wp_strip_all_tags( wptexturize( $additional_content ) ) );
+}
+?>
 
 <?php do_action( 'woocommerce_email_footer' ); ?>

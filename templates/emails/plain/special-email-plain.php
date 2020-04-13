@@ -28,4 +28,11 @@ echo "\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n\
 echo __( 'This is an email sent as the order status has been changed to "Special".', 'special-email' ) .
     "\n\n";
 
+/**
+ * Show user-defined additional content - this is set in each email's settings.
+ */
+if ( $additional_content ) {
+    echo esc_html( wp_strip_all_tags( wptexturize( $additional_content ) ) );
+}
+
 echo apply_filters( 'woocommerce_email_footer_text', get_option( 'woocommerce_email_footer_text' ) );

@@ -34,8 +34,10 @@ class Custom_Email extends WC_Email {
 
         // Other settings
         $this->template_base = CUSTOM_TEMPLATE_PATH;
-        // default the email recipient to the admin's email address
+        // default recipient to null. This field will be set when trigger pulls order information
+        // and sets it to customer email
         $this->recipient     = null;
+        // placeholders for form fields
         $this->placeholders  = array(
             '{order_date}'              => '',
             '{order_number}'            => '',
