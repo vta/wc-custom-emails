@@ -54,6 +54,7 @@ class Ready_For_Pickup_Email extends WC_Email {
         foreach ( $items as $item_key => $item_value ) {
             // add an event for the item email, pass the item ID so other details can be collected as needed
             wp_schedule_single_event( time(), 'custom_ready_email_trigger', array( 'item_id' => $item_key ) );
+            break;
         }
     }
 
