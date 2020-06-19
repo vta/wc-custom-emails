@@ -10,8 +10,10 @@ $opening_paragraph = __( 'The following by %s is finishing! The details of the i
 <?php do_action( 'woocommerce_email_header', $email_heading ); ?>
 
 <?php
-$billing_first_name = ( version_compare( WOOCOMMERCE_VERSION, "3.0.0" ) < 0 ) ? $order->billing_first_name : $order->get_billing_first_name();
-$billing_last_name = ( version_compare( WOOCOMMERCE_VERSION, "3.0.0" ) < 0 ) ? $order->billing_last_name : $order->get_billing_last_name();
+$customer = new WC_Customer( $order->get_customer_id() );
+$billing_first_name = $customer->get_first_name();
+$billing_last_name = $customer->get_last_name();
+
 if ( $order && $billing_first_name && $billing_last_name ) : ?>
     <p><?php printf( $opening_paragraph, $billing_first_name . ' ' . $billing_last_name ); ?></p>
 <?php endif; ?>

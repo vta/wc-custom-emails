@@ -9,8 +9,10 @@ echo "= " . $email_heading . " =\n\n";
 $opening_paragraph = __( 'An order, made by %s, has now been marked Special. The details of the item are as follows:',
     'special-email' );
 
-$billing_first_name = ( version_compare( WOOCOMMERCE_VERSION, "3.0.0" ) < 0 ) ? $order->billing_first_name : $order->get_billing_first_name();
-$billing_last_name = ( version_compare( WOOCOMMERCE_VERSION, "3.0.0" ) < 0 ) ? $order->billing_last_name : $order->get_billing_last_name();
+$customer = new WC_Customer( $order->get_customer_id() );
+$billing_first_name = $customer->get_first_name();
+$billing_last_name = $customer->get_last_name();
+
 if ( $order && $billing_first_name && $billing_last_name ) {
     echo sprintf( $opening_paragraph, $billing_first_name . ' ' . $billing_last_name ) . "\n\n";
 }

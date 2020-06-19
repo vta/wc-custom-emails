@@ -18,7 +18,7 @@ class Finishing_Email extends WC_Email {
         $this->title                = __( 'Finishing Email', 'finishing-email' );
         $this->description          = __( 'This email is received when an order status is changed to "Receiving".', 'finishing-email' );
 
-        $this->heading              = __( 'Finishing Email', 'finishing-email' );
+        $this->heading              = __( 'Finishing', 'finishing-email' );
         $this->subject              = __( '[{blogname}] Order for {product_title} (Order {order_number}) - {order_date}', 'finishing-email' );
 
         // email template path
