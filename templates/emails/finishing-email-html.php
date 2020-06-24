@@ -3,7 +3,7 @@
  * Customer "Finishing" order status email
  */
 $order = new WC_order( $item_data->order_id );
-$opening_paragraph = __( 'The following by %s is finishing! The details of the item are as follows:', 'woocommerce' );
+$opening_paragraph = __( 'An order, made by %s, has now been marked Finishing. The details of the item are as follows:' );
 
 ?>
 
