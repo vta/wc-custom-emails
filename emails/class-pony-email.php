@@ -2,32 +2,32 @@
 /**
  * Finishing Email
  *
- * An email class for custom "Finishing" emails
+ * An email class for custom "Pony" emails
  *
- * @class       Finishing_Email
+ * @class       Pony_Email
  * @extends     WC_Email
  *
  */
-class Finishing_Email extends WC_Email {
+class Pony_Email extends WC_Email {
 
     function __construct() {
 
         // Add email ID, title, description, heading, subject
-        $this->id                   = 'finishing_email';
+        $this->id                   = 'pony_email';
         $this->customer_email       = true;
-        $this->title                = __( 'Finishing Email', 'finishing-email' );
-        $this->description          = __( 'This email is received when an order status is changed to "Receiving".', 'finishing-email' );
+        $this->title                = __( 'Pony Email', 'pony-email' );
+        $this->description          = __( 'This email is received when an order status is changed to "Pony".', 'pony-email' );
 
-        $this->heading              = __( 'Finishing', 'finishing-email' );
-        $this->subject              = __( '[{blogname}] Order for {product_title} (Order {order_number}) - {order_date}', 'finishing-email' );
+        $this->heading              = __( 'Thanks for using VTA Document Services', 'pony-email' );
+        $this->subject              = __( '[{blogname}] Order for {product_title} (Order {order_number}) - {order_date}', 'pony-email' );
 
         // email template path
-        $this->template_html    = 'emails/finishing-email-html.php';
-        $this->template_plain   = 'emails/plain/finishing-email-plain.php';
+        $this->template_html    = 'emails/pony-email-html.php';
+        $this->template_plain   = 'emails/plain/pony-email-plain.php';
 
         // Triggers for this email
-        add_action( 'custom_finishing_email_notification', array( $this, 'queue_notification' ) );
-        add_action( 'custom_finishing_email_trigger_notification', array( $this, 'trigger' ) );
+        add_action( 'custom_pony_email_notification', array( $this, 'queue_notification' ) );
+        add_action( 'custom_pony_email_trigger_notification', array( $this, 'trigger' ) );
 
         // Call parent constructor
         parent::__construct();
@@ -53,7 +53,7 @@ class Finishing_Email extends WC_Email {
         // foreach item in the order
         foreach ( $items as $item_key => $item_value ) {
             // add an event for the item email, pass the item ID so other details can be collected as needed
-            wp_schedule_single_event( time(), 'custom_finishing_email_trigger', array( 'item_id' => $item_key ) );
+            wp_schedule_single_event( time(), 'custom_pony_email_trigger', array( 'item_id' => $item_key ) );
             break;
         }
     }
@@ -87,10 +87,10 @@ class Finishing_Email extends WC_Email {
             } else {
 
                 $this->find[]    = '{order_date}';
-                $this->replace[] = __( 'N/A', 'finishing-email' );
+                $this->replace[] = __( 'N/A', 'pony-email' );
 
                 $this->find[]    = '{order_number}';
-                $this->replace[] = __( 'N/A', 'finishing-email' );
+                $this->replace[] = __( 'N/A', 'pony-email' );
             }
 
             // if no recipient is set, do not send the email
@@ -195,50 +195,50 @@ class Finishing_Email extends WC_Email {
         $placeholder_text  = sprintf( __( 'Available placeholders: %s', 'woocommerce' ), '<code>' . esc_html( implode( '</code>, <code>', array_keys( $this->placeholders ) ) ) . '</code>' );
         $this->form_fields = array(
             'enabled' => array(
-                'title' 		=> __( 'Enable/Disable', 'finishing-email' ),
+                'title' 		=> __( 'Enable/Disable', 'pony-email' ),
                 'type' 			=> 'checkbox',
-                'label' 		=> __( 'Enable this email notification', 'finishing-email' ),
+                'label' 		=> __( 'Enable this email notification', 'pony-email' ),
                 'default' 		=> 'yes'
             ),
             'subject' => array(
-                'title' 		=> __( 'Subject', 'finishing-email' ),
+                'title' 		=> __( 'Subject', 'pony-email' ),
                 'type' 			=> 'text',
-                'description' 	=> sprintf( __( 'This controls the email subject line. Leave blank to use the default subject: <code>%s</code>.', 'finishing-email' ), $this->subject ),
+                'description' 	=> sprintf( __( 'This controls the email subject line. Leave blank to use the default subject: <code>%s</code>.', 'pony-email' ), $this->subject ),
                 'placeholder' 	=> '',
                 'default' 		=> ''
             ),
             'heading' => array(
-                'title' 		=> __( 'Email Heading', 'finishing-email' ),
+                'title' 		=> __( 'Email Heading', 'pony-email' ),
                 'type' 			=> 'text',
-                'description' 	=> sprintf( __( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: <code>%s</code>.', 'finishing-email' ), $this->heading ),
+                'description' 	=> sprintf( __( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: <code>%s</code>.', 'pony-email' ), $this->heading ),
                 'placeholder' 	=> '',
                 'default' 		=> ''
             ),
             'additional_content' => array(
-                'title'       => __( 'Additional content', 'finishing-email' ),
-                'description' => __( 'Text to appear below the main email content.', 'finishing-email' ) . ' ' .
+                'title'       => __( 'Additional content', 'pony-email' ),
+                'description' => __( 'Text to appear below the main email content.', 'pony-email' ) . ' ' .
                     $placeholder_text,
                 'css'         => 'width:400px; height: 75px;',
-                'placeholder' => __( 'N/A', 'finishing-email' ),
+                'placeholder' => __( 'N/A', 'pony-email' ),
                 'type'        => 'textarea',
                 'default'     => $this->get_default_additional_content(),
                 'desc_tip'    => true,
             ),
             'email_type' => array(
-                'title' 		=> __( 'Email type', 'finishing-email' ),
+                'title' 		=> __( 'Email type', 'pony-email' ),
                 'type' 			=> 'select',
-                'description' 	=> __( 'Choose which format of email to send.', 'finishing-email' ),
+                'description' 	=> __( 'Choose which format of email to send.', 'pony-email' ),
                 'default' 		=> 'html',
                 'class'			=> 'email_type',
                 'options'		=> array(
-                    'plain'		 	=> __( 'Plain text', 'finishing-email' ),
-                    'html' 			=> __( 'HTML', 'finishing-email' ),
-                    'multipart' 	=> __( 'Multipart', 'finishing-email' ),
+                    'plain'		 	=> __( 'Plain text', 'pony-email' ),
+                    'html' 			=> __( 'HTML', 'pony-email' ),
+                    'multipart' 	=> __( 'Multipart', 'pony-email' ),
                 )
             )
         );
     }
 
 }
-return new Finishing_Email();
+return new Pony_Email();
 ?>

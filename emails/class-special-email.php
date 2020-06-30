@@ -16,9 +16,9 @@ class Special_Email extends WC_Email {
         $this->id                   = 'special_email';
         $this->customer_email       = true;         // intended to be sent to customer
         $this->title                = __( 'Special Email', 'special-email' );
-        $this->description          = __( 'This email is sent to cusstomers when an order status is changed to Special.', 'special-email' );
+        $this->description          = __( 'This email is sent to customers when an order status is changed to Special.', 'special-email' );
 
-        $this->heading              = __( 'Special Item Email', 'special-email' );
+        $this->heading              = __( 'Special', 'special-email' );
         $this->subject              = __( '[{blogname}] Order for {product_title} (Order {order_number}) - {order_date}', 'special-email' );
 
         // email template path
@@ -55,6 +55,8 @@ class Special_Email extends WC_Email {
         foreach ( $items as $item_key => $item_value ) {
             // add an event for the item email, pass the item ID so other details can be collected as needed
             wp_schedule_single_event( time(), 'custom_special_email_trigger', array( 'item_id' => $item_key ) );
+            // workaround to only send once
+            break;
         }
     }
 

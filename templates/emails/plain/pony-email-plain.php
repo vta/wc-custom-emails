@@ -1,12 +1,12 @@
 <?php
 /**
- * Customer "Finishing" order email
+ * Customer "Pony" order email
  */
 $order = new WC_order( $item_data->order_id );
 
 echo "= " . $email_heading . " =\n\n";
 
-$opening_paragraph = __( 'An order, made by %s, has now been marked Finishing. The details of the item are as follows:' );
+$opening_paragraph = __( 'An order, made by %s, has now been marked Pony. The details of the item are as follows:' );
 
 $customer = new WC_Customer( $order->get_customer_id() );
 $billing_first_name = $customer->get_first_name();
@@ -26,6 +26,6 @@ echo sprintf( __( 'Total: %s', 'finishing-email' ), $item_data->total ) . "\n";
 
 echo "\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n\n";
 
-echo __( 'This is an email sent as the order status has been changed to "Finishing".', 'finishing-email' ) . "\n\n";
+echo __( 'This is an email sent as the order status has been changed to "Finishing".', 'pony-email' ) . "\n\n";
 
 echo apply_filters( 'woocommerce_email_footer_text', get_option( 'woocommerce_email_footer_text' ) );

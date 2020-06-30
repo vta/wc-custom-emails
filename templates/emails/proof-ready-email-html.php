@@ -1,9 +1,9 @@
 <?php
 /**
- * An email notifying that the order status is now "Special"
+ * An email notifying that the order status is now "Proof Ready"
  */
 $order = new WC_order( $item_data->order_id );
-$opening_paragraph = __( 'An order, made by %s, has now been marked Special. The details of the item are as follows:' );
+$opening_paragraph = __( 'An order, made by %s, has now been marked Proof Ready. The details of the item are as follows:' );
 
 ?>
 

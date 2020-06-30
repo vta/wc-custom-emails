@@ -10,38 +10,40 @@ $opening_paragraph = __( 'A new order has been made by %s. The details of the it
 <?php do_action( 'woocommerce_email_header', $email_heading ); ?>
 
 <?php
-$billing_first_name = ( version_compare( WOOCOMMERCE_VERSION, "3.0.0" ) < 0 ) ? $order->billing_first_name : $order->get_billing_first_name();
-$billing_last_name = ( version_compare( WOOCOMMERCE_VERSION, "3.0.0" ) < 0 ) ? $order->billing_last_name : $order->get_billing_last_name();
+$customer = new WC_Customer( $order->get_customer_id() );
+$billing_first_name = $customer->get_first_name();
+$billing_last_name = $customer->get_last_name();
+
 if ( $order && $billing_first_name && $billing_last_name ) : ?>
   <p><?php printf( $opening_paragraph, $billing_first_name . ' ' . $billing_last_name ); ?></p>
 <?php endif; ?>
 
-  <table cellspacing="0" cellpadding="6" style="width: 100%; border: 1px solid #eee;" border="1" bordercolor="#eee">
-    <tbody>
-    <tr>
-      <th scope="row" style="text-align:left; border: 1px solid #eee;"><?php _e( 'Ordered Product', 'custom-email' ); ?></th>
-      <td style="text-align:left; border: 1px solid #eee;"><?php echo $item_data->product_title; ?></td>
-    </tr>
-    <tr>
-      <th scope="row" style="text-align:left; border: 1px solid #eee;"><?php _e( 'Quantity', 'custom-email' ); ?></th>
-      <td style="text-align:left; border: 1px solid #eee;"><?php echo $item_data->qty; ?></td>
-    </tr>
-    <tr>
-      <th scope="row" style="text-align:left; border: 1px solid #eee;"><?php _e( 'Total', 'custom-email' ); ?></th>
-      <td style="text-align:left; border: 1px solid #eee;"><?php echo $item_data->total; ?></td>
-    </tr>
-    </tbody>
-  </table>
-
-  <p><?php _e( 'This is a custom email sent as the order status has been changed to Pending Payment.', 'custom-email' ); ?></p>
-
 <?php
-/**
-* Show user-defined additional content - this is set in each email's settings.
+/*
+* @hooked WC_Emails::order_details() Shows the order details table.
+* @hooked WC_Structured_Data::generate_order_data() Generates structured data.
+* @hooked WC_Structured_Data::output_structured_data() Outputs structured data.
+* @since 2.5.0
 */
-if ( $additional_content ) {
-echo wp_kses_post( wpautop( wptexturize( $additional_content ) ) );
-}
-?>
+do_action( 'woocommerce_email_order_details', $order );
 
-<?php do_action( 'woocommerce_email_footer' ); ?>
+/*
+* @hooked WC_Emails::order_meta() Shows order meta data.
+*/
+do_action( 'woocommerce_email_order_meta', $order );
+
+/*
+* @hooked WC_Emails::customer_details() Shows customer details
+* @hooked WC_Emails::email_address() Shows email address
+*/
+do_action( 'woocommerce_email_customer_details', $order );
+
+/**
+ * Show user-defined additional content - this is set in each email's settings.
+ */
+if ( $additional_content ) {
+    echo wp_kses_post( wpautop( wptexturize( $additional_content ) ) );
+}
+
+do_action( 'woocommerce_email_footer' );
+?>
