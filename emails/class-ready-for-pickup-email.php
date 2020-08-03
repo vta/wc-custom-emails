@@ -111,7 +111,7 @@ class Ready_For_Pickup_Email extends WC_Email {
 
         $item_object = new stdClass();
 
-        // order ID
+        // order ID$this->heading
         $query_order_id = "SELECT order_id FROM `". $wpdb->prefix."woocommerce_order_items`
                             WHERE order_item_id = %d";
         $get_order_id = $wpdb->get_results( $wpdb->prepare( $query_order_id, $item_id ) );
@@ -176,18 +176,20 @@ class Ready_For_Pickup_Email extends WC_Email {
 
     // return the subject
     function get_subject() {
-
-        $order = new WC_order( $this->object->order_id );
-        return apply_filters( 'woocommerce_email_subject_' . $this->id, $this->format_string( $this->subject ), $this->object );
-
+        // check if user defined subject in settings, else set it the default subject
+        ! empty( $this->settings['subject'] )
+            ? $subject = $this->settings['subject']
+            : $subject = $this->subject;
+        return apply_filters( 'woocommerce_email_subject_' . $this->id, $this->format_string( $subject ), $this->object );
     }
 
     // return the email heading
     public function get_heading() {
-
-        $order = new WC_order( $this->object->order_id );
-        return apply_filters( 'woocommerce_email_heading_' . $this->id, $this->format_string( $this->heading ), $this->object );
-
+        // check if user defined heading in settings, else set it the default heading
+        ! empty( $this->settings['heading'] )
+            ? $heading = $this->settings['heading']
+            : $heading = $this->heading;
+        return apply_filters( 'woocommerce_email_heading_' . $this->id, $this->format_string( $heading ), $this->object );
     }
 
     // form fields that are displayed in WooCommerce->Settings->Emails
