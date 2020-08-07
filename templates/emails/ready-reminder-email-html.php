@@ -18,11 +18,12 @@ $billing_last_name = $customer->get_last_name();
 if ( $order && $billing_first_name && $billing_last_name ) : ?>
     <p><?php printf( $opening_paragraph, $billing_first_name . ' ' . $billing_last_name ); ?></p>
     <p>
-      If you already picked up your order, please login to your VTA Document Services Account and follow this link
-      <form action="<?php echo wc_get_page_permalink('/my-account/view-order/' . $order->get_id()) ?>" method="get">
-        <button type="submit"><?php echo wc_get_page_permalink('/my-account/view-order/' . $order->get_id()) ?></button>
-      </form>
-      to mark your order as complete
+        If you already picked up your order, click on the link below to complete your order. You may need to log in to do
+        the following action
+        <form action="<?php echo site_url() . '/my-account/view-order/' . $order->get_id() ?>" method="get">
+            <input id="completed" type="hidden" name="completed" value="1">
+            <button type="submit">I already picked up my order</button>
+        </form>
     </p>
 <?php endif; ?>
 
