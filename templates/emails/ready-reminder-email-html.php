@@ -4,8 +4,7 @@
  */
 $order = new WC_order( $item_data->order_id );
 $opening_paragraph = __( '%s, this is a reminder email that your order is ready for pick up. Please come get your order 
-as soon as possible. If this was a mistake, click <a href="<?php site_url() ?>"><b>here</b></a> to notify the team that 
-you have already picked up your order.', 'ready-for-pickup-email' );
+as soon as possible.', 'ready-for-pickup-email' );
 ?>
 
 <?php do_action( 'woocommerce_email_header', $email_heading ); ?>
