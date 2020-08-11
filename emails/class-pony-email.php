@@ -176,18 +176,20 @@ class Pony_Email extends WC_Email {
 
     // return the subject
     function get_subject() {
-
-        $order = new WC_order( $this->object->order_id );
-        return apply_filters( 'woocommerce_email_subject_' . $this->id, $this->format_string( $this->subject ), $this->object );
-
+        // check if user defined subject exists, else use default subject
+        $subject = ! empty( $this->settings['subject'] )
+            ? $this->settings['subject']
+            : $this->subject;
+        return apply_filters( 'woocommerce_email_subject_' . $this->id, $this->format_string( $subject ), $this->object );
     }
 
     // return the email heading
     public function get_heading() {
-
-        $order = new WC_order( $this->object->order_id );
-        return apply_filters( 'woocommerce_email_heading_' . $this->id, $this->format_string( $this->heading ), $this->object );
-
+        // check if user defined heading exists, else use default heading
+        $heading = ! empty( $this->settings['heading'] )
+            ? $this->settings['heading']
+            : $this->heading;
+        return apply_filters( 'woocommerce_email_heading_' . $this->id, $this->format_string( $heading ), $this->object );
     }
 
     // form fields that are displayed in WooCommerce->Settings->Emails
