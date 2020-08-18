@@ -2,7 +2,7 @@
 /**
  * Customer email reminder that order is Ready for Pick Up
  */
-$order = new WC_order( $item_data->order_id );
+$order = new WC_order( $order_id );
 $opening_paragraph = __( '%s, this is a reminder email that your order is ready for pick up. Please come get your order 
 as soon as possible.', 'ready-for-pickup-email' );
 ?>
