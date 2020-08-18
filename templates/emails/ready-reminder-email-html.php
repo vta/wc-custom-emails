@@ -35,7 +35,7 @@ if ( $order && $billing_first_name && $billing_last_name ) : ?>
                         text-decoration: none;
                         text-transform: uppercase;
                         transition: opacity 0.15s linear;">
-            I already picked up my order
+            I have picked up my order
         </a>
     </p>
 <?php endif; ?>
