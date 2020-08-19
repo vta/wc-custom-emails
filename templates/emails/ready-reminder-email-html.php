@@ -2,7 +2,7 @@
 /**
  * Customer email reminder that order is Ready for Pick Up
  */
-$order = new WC_order( $item_data->order_id );
+$order = new WC_order( $order_id );
 $opening_paragraph = __( '%s, this is a reminder email that your order is ready for pick up. Please come get your order 
 as soon as possible.', 'ready-for-pickup-email' );
 ?>
@@ -35,7 +35,7 @@ if ( $order && $billing_first_name && $billing_last_name ) : ?>
                         text-decoration: none;
                         text-transform: uppercase;
                         transition: opacity 0.15s linear;">
-            I already picked up my order
+            I have picked up my order
         </a>
     </p>
 <?php endif; ?>

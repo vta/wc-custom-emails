@@ -13,6 +13,8 @@
 class Ready_Reminder_Email extends WC_Email
 {
 
+    private $order_id;
+
     function __construct()
     {
 
@@ -54,60 +56,40 @@ class Ready_Reminder_Email extends WC_Email
     {
 
         $order = new WC_order( $order_id );
-        $items = $order->get_items();
-        // foreach item in the order
-        foreach ( $items as $item_key => $item_value ) {
-            // add an event for the item email, pass the item ID so other details can be collected as needed
-            wp_schedule_single_event( time(), 'custom_ready_reminder_email_trigger', array( 'item_id' => $item_key ) );
-            break;
-        }
+        wp_schedule_single_event( time(), 'custom_ready_reminder_email_trigger', array( $order_id ) );
     }
 
     // This function collects the data and sends the email
-    function trigger( $item_id )
+    function trigger( $order_id )
     {
+        error_log('From the trigger: ' . $order_id );
+        $order = wc_get_order( $order_id );
+        // save order_id here to pass to get_html_content
+        $this->order_id = $order_id;
 
-        $send_email = true;
-        // validations
-        if ( $item_id && $send_email ) {
-            // create an object with item details like name, quantity etc.
-            $this->object = $this->create_object( $item_id );
+        $this->find[] = '{order_date}';
+        $this->replace[] = date_i18n( wc_date_format(), strtotime( $order->get_date_created() ) );
 
-            // replace the merge tags with valid data
-            $key = array_search( '{product_title}', $this->find );
-            if ( false !== $key ) {
-                unset( $this->find[$key] );
-                unset( $this->replace[$key] );
-            }
+        $this->find[] = '{order_number}';
+        $this->replace[] = function_exists( 'wc_sequential_order_numbers' )  // check for plugin
+            ? $order->get_order_number()
+            : $this->object->order_id;
 
-            $this->find[] = '{product_title}';
-            $this->replace[] = $this->object->product_title;
+        error_log(json_encode($order->get_billing_email(), JSON_PRETTY_PRINT));
 
-            if ( $this->object->order_id ) {
+        $this->recipient = $order->get_billing_email();
 
-                $this->find[] = '{order_date}';
-                $this->replace[] = date_i18n( wc_date_format(), strtotime( $this->object->order_date ) );
-
-                $this->find[] = '{order_number}';
-                $this->replace[] = $this->object->order_id;
-            } else {
-
-                $this->find[] = '{order_date}';
-                $this->replace[] = __( 'N/A', 'ready-reminder-email' );
-
-                $this->find[] = '{order_number}';
-                $this->replace[] = __( 'N/A', 'ready-reminder-email' );
-            }
-
-            // if no recipient is set, do not send the email
-            if ( !$this->get_recipient() ) {
-                return;
-            }
-            // send the email
-            $this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(),
-                array() );
-
+        // if no recipient is set, do not send the email
+        if ( !$this->get_recipient() ) {
+            return;
         }
+        error_log($this->get_subject());
+
+        // send the email
+        $this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(),
+            array() );
+        // avoid stacking this when repeating for reminders
+        unset($this->replace);
     }
 
     // Create an object with the data to be passed to the templates
@@ -149,7 +131,7 @@ class Ready_Reminder_Email extends WC_Email
         // total
         $item_object->total = wc_price( wc_get_order_item_meta( $item_id, '_line_total' ) );
 
-        // email adress
+        // email address
         $item_object->billing_email = (version_compare( WOOCOMMERCE_VERSION, "3.0.0" ) < 0) ? $order->billing_email : $order->get_billing_email();
 
         // customer ID
@@ -164,7 +146,7 @@ class Ready_Reminder_Email extends WC_Email
     {
         ob_start();
         wc_get_template( $this->template_html, array(
-            'item_data' => $this->object,
+            'order_id' => $this->order_id,
             'email_heading' => $this->get_heading(),
             'additional_content' => $this->get_additional_content()
         ), 'custom-templates', $this->template_base );
@@ -186,10 +168,12 @@ class Ready_Reminder_Email extends WC_Email
     // return the subject
     function get_subject()
     {
+        error_log(json_encode($this->settings['subject']));
+        error_log(json_encode($this->replace));
         // check if user defined subject exists, else use default subject
         $subject = ! empty( $this->settings['subject'] )
             ? $this->settings['subject']
-            : $this->heading;
+            : $this->subject;
         return apply_filters( 'woocommerce_email_subject_' . $this->id, $this->format_string( $subject ), $this->object );
     }
 

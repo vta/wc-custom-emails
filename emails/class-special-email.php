@@ -85,7 +85,9 @@ class Special_Email extends WC_Email {
                 $this->replace[] = date_i18n( wc_date_format(), strtotime( $this->object->order_date ) );
 
                 $this->find[]    = '{order_number}';
-                $this->replace[] = $this->object->order_id;
+                $this->replace[] = function_exists( 'wc_sequential_order_numbers' )  // check for plugin
+                    ? wc_get_order( $this->object->order_id )->get_order_number()
+                    : $this->object->order_id;
             } else {
 
                 $this->find[]    = '{order_date}';
