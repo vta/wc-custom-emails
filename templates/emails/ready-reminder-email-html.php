@@ -19,25 +19,39 @@ if ( $order && $billing_first_name && $billing_last_name ) : ?>
     <p>
         If you already picked up your order, click on the link below to complete your order. You may need to log in to complete
         the following action.
-        <a href="<?php echo site_url() . '/my-account/view-order/' . $order->get_id() . '?completed=1' ?>"
-                style="background: #017aca;
-                        color: #fff;
-                        border: none;
-                        cursor: pointer;
-                        display: inline-block;
-                        font-weight: 600;
-                        letter-spacing: 0.0333em;
-                        line-height: 1.25;
-                        margin: 1rem 0;
-                        opacity: 1;
-                        padding: 1.1em 1.44em;
-                        text-align: center;
-                        text-decoration: none;
-                        text-transform: uppercase;
-                        transition: opacity 0.15s linear;">
-            I have picked up my order
-        </a>
     </p>
+    <table>
+      <tr>
+        <td style="background: #017aca;
+                border: none;
+                cursor: pointer;
+                opacity: 1;
+                padding: 12px 10px;
+                text-align: center;">
+          <a href="<?php echo site_url() . '/my-account/view-order/' . $order->get_id() . '?completed=1' ?>"
+              style="height: 100%;
+                     width: 100%;
+                     background: #017aca;
+                     text-decoration: none;
+                     text-align: center;
+                     color: #ffffff;">
+            <span style="text-decoration: none;
+                      color: #ffffff;
+                      letter-spacing: 0.0333em;
+                      line-height: 1.25;
+                      text-decoration: none;
+                      text-transform: uppercase;
+                      font-weight: 600;">
+              I have picked up my order
+            </span>
+          </a>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 10px; background: #ffffff"></td>
+      </tr>
+    </table>
+
 <?php endif; ?>
 
 <?php
