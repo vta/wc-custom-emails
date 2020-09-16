@@ -62,7 +62,6 @@ class Ready_Reminder_Email extends WC_Email
     // This function collects the data and sends the email
     function trigger( $order_id )
     {
-        error_log('From the trigger: ' . $order_id );
         $order = wc_get_order( $order_id );
         // save order_id here to pass to get_html_content
         $this->order_id = $order_id;
@@ -83,7 +82,6 @@ class Ready_Reminder_Email extends WC_Email
         if ( !$this->get_recipient() ) {
             return;
         }
-        error_log($this->get_subject());
 
         // send the email
         $this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(),
@@ -168,8 +166,6 @@ class Ready_Reminder_Email extends WC_Email
     // return the subject
     function get_subject()
     {
-        error_log(json_encode($this->settings['subject']));
-        error_log(json_encode($this->replace));
         // check if user defined subject exists, else use default subject
         $subject = ! empty( $this->settings['subject'] )
             ? $this->settings['subject']
