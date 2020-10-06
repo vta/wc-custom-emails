@@ -31,7 +31,7 @@ if ( $order && $billing_first_name && $billing_last_name ) : ?>
                 style="height:50px;v-text-anchor:middle;width:300px;"
                 arcsize="8%"
                 strokecolor="#361b17"
-                fillcolor="#017aca">
+                fillcolor="#e53935">
               <w:anchorlock/>
               <center
                 style="color:#ffffff;
@@ -43,7 +43,7 @@ if ( $order && $billing_first_name && $billing_last_name ) : ?>
             </v:roundrect>
             <![endif]-->
             <a href="<?php echo site_url() . '/my-account/view-order/' . $order->get_id() . '?completed=1' ?>"
-               style="background:#017aca;border:1px solid #361b17;border-radius:4px;color:#ffffff;
+               style="background:#e53935;border:1px solid #361b17;border-radius:4px;color:#ffffff;
                display:inline-block;font-family:sans-serif;font-size:14px;font-weight:bold;line-height:50px;
                text-align:center;text-decoration:none;width:300px;-webkit-text-size-adjust:none;mso-hide:all;"
             >
