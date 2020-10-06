@@ -17,38 +17,40 @@ $billing_last_name = $customer->get_last_name();
 if ( $order && $billing_first_name && $billing_last_name ) : ?>
     <p><?php printf( $opening_paragraph, $billing_first_name . ' ' . $billing_last_name ); ?></p>
     <p>
-        If you already picked up your order, click on the link below to complete your order. You may need to log in to complete
-        the following action.
+      <strong>If you already picked up your order, click on the link below to complete your order</strong>. You may need
+      to log in to complete the following action.
     </p>
     <table>
       <tr>
-        <td style="background: #017aca;
-                border: none;
-                cursor: pointer;
-                opacity: 1;
-                padding: 12px 10px;
-                text-align: center;">
-          <a href="<?php echo site_url() . '/my-account/view-order/' . $order->get_id() . '?completed=1' ?>"
-              style="height: 100%;
-                     width: 100%;
-                     background: #017aca;
-                     text-decoration: none;
-                     text-align: center;
-                     color: #ffffff;">
-            <span style="text-decoration: none;
-                      color: #ffffff;
-                      letter-spacing: 0.0333em;
-                      line-height: 1.25;
-                      text-decoration: none;
-                      text-transform: uppercase;
-                      font-weight: 600;">
-              I have picked up my order
-            </span>
-          </a>
+        <td style="padding: 10px 0 20px 0">
+          <div>
+            <!--[if mso]>
+            <v:roundrect
+                xmlns:v="urn:schemas-microsoft-com:vml"
+                xmlns:w="urn:schemas-microsoft-com:office:word" href="<?php echo site_url() . '/my-account/view-order/' . $order->get_id() . '?completed=1' ?>"
+                style="height:50px;v-text-anchor:middle;width:300px;"
+                arcsize="8%"
+                strokecolor="#361b17"
+                fillcolor="#017aca">
+              <w:anchorlock/>
+              <center
+                style="color:#ffffff;
+                font-family:sans-serif;
+                font-size:14px;
+                font-weight:bold;">
+                I HAVE PICKED UP MY ORDER
+              </center>
+            </v:roundrect>
+            <![endif]-->
+            <a href="<?php echo site_url() . '/my-account/view-order/' . $order->get_id() . '?completed=1' ?>"
+               style="background:#017aca;border:1px solid #361b17;border-radius:4px;color:#ffffff;
+               display:inline-block;font-family:sans-serif;font-size:14px;font-weight:bold;line-height:50px;
+               text-align:center;text-decoration:none;width:300px;-webkit-text-size-adjust:none;mso-hide:all;"
+            >
+              I HAVE PICKED UP MY ORDER
+            </a>
+          </div>
         </td>
-      </tr>
-      <tr>
-        <td style="padding: 10px; background: #ffffff"></td>
       </tr>
     </table>
 
