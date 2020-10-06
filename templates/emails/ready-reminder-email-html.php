@@ -17,8 +17,8 @@ $billing_last_name = $customer->get_last_name();
 if ( $order && $billing_first_name && $billing_last_name ) : ?>
     <p><?php printf( $opening_paragraph, $billing_first_name . ' ' . $billing_last_name ); ?></p>
     <p>
-      <strong>If you already picked up your order, click on the link below to complete your order</strong>. You may need
-      to log in to complete the following action.
+      <strong style="color: #e53935;">If you already picked up your order, click on the link below to complete your
+        order</strong>. You may need to log in to complete the following action.
     </p>
     <table>
       <tr>
